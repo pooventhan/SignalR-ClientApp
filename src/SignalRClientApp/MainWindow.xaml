@@ -15,13 +15,16 @@
         <TextBox Name="authTokenValue"  HorizontalAlignment="Left" Height="23" Margin="93,38,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253"/>
         <Label Content="Request:" FontWeight="Bold" HorizontalAlignment="Left" Margin="13,164,0,0" VerticalAlignment="Top"/>
         <Label Content="Auth-Token:" FontWeight="Bold" HorizontalAlignment="Left" Margin="13,35,0,0" VerticalAlignment="Top"/>
-        <Button Content="Connect" HorizontalAlignment="Left" Margin="13,67,0,0" VerticalAlignment="Top" Width="75" Height="22" Click="ConnectButton_Click"/>
+        <Button Content="Connect" HorizontalAlignment="Left" Margin="13,106,0,0" VerticalAlignment="Top" Width="75" Height="22" Click="ConnectButton_Click"/>
         <TextBox Name="responseValue" IsReadOnly="True" AcceptsReturn="True" AcceptsTab="True" HorizontalAlignment="Left" Height="430" Margin="447,199,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="418"/>
         <TextBox Name="logsOuput" IsReadOnly="True" HorizontalAlignment="Left" Height="105" Margin="10,524,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="401"/>
-        <Button Content="Disconnect" HorizontalAlignment="Left" Margin="102,67,0,0" VerticalAlignment="Top" Width="75" Height="22" Click="DisconnectButton_Click"/>
-        <Label Content="Request method:" FontWeight="Bold" HorizontalAlignment="Left" Margin="13,112,0,0" VerticalAlignment="Top"/>
-        <TextBox Name="requestMethodValue" HorizontalAlignment="Left" Height="23" Margin="124,115,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="189"/>
+        <Button Content="Disconnect" HorizontalAlignment="Left" Margin="108,106,0,0" VerticalAlignment="Top" Width="75" Height="22" Click="DisconnectButton_Click"/>
+        <Label Content="Request method:" FontWeight="Bold" HorizontalAlignment="Left" Margin="13,138,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.525,1.577"/>
+        <TextBox Name="requestMethodValue" HorizontalAlignment="Left" Height="23" Margin="124,141,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="189"/>
         <Label Content="Logs:" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,493,0,0" VerticalAlignment="Top"/>
+        <Label Content="Protocol:" FontWeight="Bold" HorizontalAlignment="Left" Margin="13,66,0,0" VerticalAlignment="Top"/>
+        <RadioButton Name="jsonProtocol" Content="JSON" HorizontalAlignment="Left" Margin="93,71,0,0" VerticalAlignment="Top"/>
+        <RadioButton Name="messagePackProtocol" Content="MessagePack" HorizontalAlignment="Left" Margin="160,71,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

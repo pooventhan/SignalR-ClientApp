@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -73,7 +75,7 @@ namespace SignalRClientApp
                 return;
             }
 
-            var request = JsonConvert.DeserializeObject(requestValue.Text);
+            var request = GetRequestObject();
 
             try
             {
@@ -89,12 +91,18 @@ namespace SignalRClientApp
 
         private HubConnection BuildHubConnection(string endpoint, string authToken)
         {
-            return new HubConnectionBuilder()
+            var connectionBuilder = new HubConnectionBuilder()
                 .WithUrl(endpoint, options =>
                 {
                     options.Headers.Add("Auth-Token", authToken);
-                })
-                .Build();
+                });
+
+            if(GetSelectedProtocol() == Protocol.MessagePack)
+            {
+                connectionBuilder.AddMessagePackProtocol();
+            }
+
+            return connectionBuilder.Build();
         }
 
         private void ConfigureResponseSubscription()
@@ -125,9 +133,45 @@ namespace SignalRClientApp
         {
             WriteLogOuput("Response incoming..");
 
-            var jsonObject = response as JObject;
+            var selectedProtocol = GetSelectedProtocol();
 
-            SetResponseOutput(jsonObject.ToString());
+            if (selectedProtocol == Protocol.JSON)
+            {
+                SetResponseOutput(response.ToString());
+            }
+            else if(selectedProtocol == Protocol.MessagePack)
+            {
+                SetResponseOutput(JsonConvert.SerializeObject(response, Formatting.Indented));
+            }
+        }
+
+        private Protocol GetSelectedProtocol()
+        {
+            if(messagePackProtocol.Dispatcher.Invoke(() => messagePackProtocol.IsChecked == true))
+            {
+                return Protocol.MessagePack;
+            }
+
+            return Protocol.JSON;
+        }
+
+        private object GetRequestObject()
+        {
+            var selectedProtocol = GetSelectedProtocol();
+
+            var requestText = requestValue.Text;
+
+            if (selectedProtocol == Protocol.JSON)
+            {
+                return JsonConvert.DeserializeObject(requestText);
+            }
+            else if (selectedProtocol == Protocol.MessagePack)
+            {
+                var requestBytes = MessagePack.MessagePackSerializer.FromJson(requestText);
+                return MessagePack.MessagePackSerializer.Deserialize<Dictionary<string, object>>(requestBytes);
+            }
+
+            return null;
         }
     }
 }
