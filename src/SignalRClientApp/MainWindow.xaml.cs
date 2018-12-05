@@ -65,13 +65,21 @@ namespace SignalRClientApp
                 return;
             }
 
+            var requestMethod = requestMethodValue.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(requestMethod))
+            {
+                WriteLogOuput("Please specify request method.");
+                return;
+            }
+
             var request = JsonConvert.DeserializeObject(requestValue.Text);
 
             try
             {
                 WriteLogOuput("Sending request..");
                 SetResponseOutput(string.Empty);
-                await connection.InvokeAsync("ValidateEmail", request).ConfigureAwait(false);
+                await connection.InvokeAsync(requestMethod, request).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -91,14 +99,9 @@ namespace SignalRClientApp
 
         private void ConfigureResponseSubscription()
         {
-            connection.On<object>("OnEmailResponse", (response) =>
-            {
-                WriteLogOuput("Response incoming..");
-
-                var jsonObject = response as JObject;
-
-                SetResponseOutput(jsonObject.ToString());
-            });
+            connection.On<object>("OnEmailResponse", ReceiveResponse);
+            connection.On<object>("OnPhoneResponse", ReceiveResponse);
+            connection.On<object>("OnEnrichResponse", ReceiveResponse);
         }
 
         private void WriteLogOuput(string message)
@@ -116,6 +119,15 @@ namespace SignalRClientApp
             {
                 responseValue.Text = output;
             });
+        }
+
+        private void ReceiveResponse(object response)
+        {
+            WriteLogOuput("Response incoming..");
+
+            var jsonObject = response as JObject;
+
+            SetResponseOutput(jsonObject.ToString());
         }
     }
 }
