@@ -5,3 +5,5 @@
 /src/.vs/SignalRClientApp/v15/Server/sqlite3
 /src/SignalRClientApp/bin/Debug
 /src/SignalRClientApp/obj/Debug
+*.suo
+/src/packages
