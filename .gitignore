@@ -7,3 +7,5 @@
 /src/SignalRClientApp/obj/Debug
 *.suo
 /src/packages
+/src/SignalRClientApp/bin
+/src/SignalRClientApp/obj/Release
